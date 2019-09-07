@@ -1,7 +1,10 @@
 const cluster = require("cluster");
 const fastify = require("fastify")();
+
 const NUM_CPU_CORES = require("os").cpus().length;
 const port = 3000;
+
+fastify.register(require("fastify-redis"), { host: "127.0.0.1" });
 
 if (cluster.isMaster) {
   console.log(`Master ${process.pid} is running`);
@@ -18,6 +21,13 @@ if (cluster.isMaster) {
     console.log(`worker: ${cluster.worker.id}`);
     res.res.end();
   });
+
+  fastify.post("/", (req, res) => {
+    const { redis } = fastify;
+    console.log(req.body);
+    res.res.end();
+  });
+
   fastify.listen(port, () => {
     console.log(
       `Fastify "Hello World" listening on port ${port}, PID: ${process.pid}`

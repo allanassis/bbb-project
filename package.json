@@ -19,5 +19,6 @@
   "homepage": "https://github.com/allanassis/bbb-project#readme",
   "dependencies": {
     "fastify": "^2.8.0",
+    "fastify-redis": "^3.1.1"
   }
 }
