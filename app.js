@@ -28,15 +28,26 @@ if (cluster.isMaster) {
   });
 
   fastify.post("/", async ({ body: data }, reply) => {
-    const { redis } = fastify;
+    const {
+      redis,
+      mongo: { db: mongoDB }
+    } = fastify;
     const recordsLen = await redis.llen(data.id);
-
-    if (recordsLen == 500) {
-      console.log("enviar tudo ao mongo");
+    if (recordsLen > 20) {
+      console.log(`Enviando tudo para o mongo`);
+      mongoDB
+        .collection("bigwall")
+        .updateOne(
+          { id: data.id },
+          { $set: { votes: recordsLen + 1 } },
+          { upsert: true }
+        )
+        .then(doc => redis.del(data.id))
+        .catch(err => redis.rpush(data.id, JSON.stringify(data)));
     } else {
+      console.log(`Enviando para o redis`);
       redis.rpush(data.id, JSON.stringify(data));
     }
-
     reply.res.end();
   });
 
