@@ -5,6 +5,11 @@ const NUM_CPU_CORES = require("os").cpus().length;
 const port = 3000;
 
 fastify.register(require("fastify-redis"), { host: "127.0.0.1" });
+fastify.register(require("fastify-mongodb"), {
+  forceClose: true,
+  useUnifiedTopology: true,
+  url: "mongodb://127.0.0.1/bbb"
+});
 
 if (cluster.isMaster) {
   console.log(`Master ${process.pid} is running`);
