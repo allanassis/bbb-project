@@ -1,0 +1,19 @@
+{
+  "name": "bbb-project",
+  "version": "1.0.0",
+  "description": "just having fun",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/allanassis/bbb-project.git"
+  },
+  "author": "Allan Assis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/allanassis/bbb-project/issues"
+  },
+  "homepage": "https://github.com/allanassis/bbb-project#readme"
+}
