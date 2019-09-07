@@ -22,10 +22,17 @@ if (cluster.isMaster) {
     res.res.end();
   });
 
-  fastify.post("/", (req, res) => {
+  fastify.post("/", async ({ body: data }, reply) => {
     const { redis } = fastify;
-    console.log(req.body);
-    res.res.end();
+    const recordsLen = await redis.llen(data.id);
+
+    if (recordsLen == 500) {
+      console.log("enviar tudo ao mongo");
+    } else {
+      redis.rpush(data.id, JSON.stringify(data));
+    }
+
+    reply.res.end();
   });
 
   fastify.listen(port, () => {
