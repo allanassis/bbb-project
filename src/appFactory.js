@@ -4,11 +4,16 @@ const fastifyRedis = require("fastify-redis");
 
 const createApp = (config, routes, dbsConfig) => {
   const fastifyInstance = fastify(config);
+  // Registando os bancos de dados
+  fastifyInstance.register(fastifyRedis, { ...dbsConfig.redis });
+  fastifyInstance.register(fastifyMongo, { ...dbsConfig.mongo });
+  //   fastifyInstance.register(routes[0]);
+
   routes.forEach(route => fastifyInstance.register(route));
 
-  // Registando os bancos de dados
-  fastifyInstance.register(fastifyMongo, dbsConfig.mongo);
-  fastifyInstance.register(fastifyRedis, dbsConfig.redis);
+  fastifyInstance.listen(3000, () => {
+    console.log(`Fastify "Hello World" listening, PID: ${process.pid}`);
+  });
 };
 
 module.exports = createApp;
