@@ -23,7 +23,7 @@ if (cluster.isMaster) {
     useUnifiedTopology: true,
     url: "mongodb://127.0.0.1/bbb"
   });
-  fastify.register(voteRotes(cluster.worker));
+  fastify.register(voteRotes);
 
   console.log(cluster.worker.id);
   fastify.listen(port, () => {

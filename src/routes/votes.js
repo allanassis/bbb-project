@@ -1,6 +1,6 @@
 const Queue = require("../models/Queue");
 
-module.exports = async function postVote(fastify, opts, next) {
+module.exports = (fastify, opts, next) => {
   const {
     redis,
     mongo: { db: mongoDB }
