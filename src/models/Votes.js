@@ -9,6 +9,10 @@ class Vote {
     await client.incrAsync(this.id);
   }
 
+  async getVote() {
+    return await client.getAsync(this.id)
+  }
+
   async bgSave() {
     await client.bgsaveAsync();
   }
