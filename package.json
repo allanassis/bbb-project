@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/allanassis/bbb-project#readme",
   "dependencies": {
+    "bluebird": "^3.5.5",
     "fastify": "^2.8.0",
     "fastify-mongodb": "^1.0.1",
     "fastify-redis": "^3.1.1",

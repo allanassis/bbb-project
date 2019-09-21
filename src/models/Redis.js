@@ -1,4 +1,6 @@
 const redis = require("redis");
+const { promisifyAll } = require("bluebird");
+promisifyAll(redis);
 
 class RedisClient {
   constructor(redis) {
