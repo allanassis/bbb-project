@@ -7,7 +7,6 @@ const createApp = (config, routes, dbsConfig) => {
   // Registando os bancos de dados
   fastifyInstance.register(fastifyRedis, { ...dbsConfig.redis });
   fastifyInstance.register(fastifyMongo, { ...dbsConfig.mongo });
-  //   fastifyInstance.register(routes[0]);
 
   routes.forEach(route => fastifyInstance.register(route));
 
