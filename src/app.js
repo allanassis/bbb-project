@@ -1,8 +1,9 @@
 const createApp = require('./appFactory');
 const cluster = require('cluster');
 const voteRotes = require('./routes/votes');
-const { client } = require('./models/Redis');
-const { client: mongoClient } = require('./models/Mongo');
+const seawallRotes = require('./routes/seawall');
+const { client: redisClient } = require('./models/Redis');
+const mongo = require('./models/Mongo');
 
 const NUM_CPU_CORES = require('os').cpus().length;
 
@@ -15,16 +16,22 @@ if (cluster.isMaster) {
   });
   setInterval(() => {
     console.log(`salvando...`);
-    const save = client.bgsave();
-    console.log(save);
+    const save = redisClient.bgsave();
+    console.log(save ? `Salvo` : `Erro ao salvar`);
   }, 20000);
 } else {
-  const app = createApp({}, [voteRotes], {
+  appUp();
+  console.log(cluster.worker.id);
+}
+
+async function appUp() {
+  const mongoClient = await mongo.connect();
+  const app = createApp({}, [voteRotes, seawallRotes], {
     mongo: {
       client: mongoClient
     },
     redis: {
-      client,
+      client: redisClient,
       host: '127.0.0.1'
     }
   });
@@ -36,6 +43,4 @@ if (cluster.isMaster) {
         `Aplicação ouvindo no endereço local ${address}, processo: ${process.pid}`
       );
   });
-
-  console.log(cluster.worker.id);
 }
