@@ -10,9 +10,7 @@ const createApp = (config, routes, dbsConfig) => {
 
   routes.forEach(route => fastifyInstance.register(route));
 
-  fastifyInstance.listen(3000, () => {
-    console.log(`Fastify "Hello World" listening, PID: ${process.pid}`);
-  });
+  return fastifyInstance
 };
 
 module.exports = createApp;
