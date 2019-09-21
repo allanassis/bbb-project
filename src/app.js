@@ -19,20 +19,22 @@ if (cluster.isMaster) {
     console.log(save);
   }, 20000);
 } else {
-  mongoClient.connect(err => {
-    const app = createApp({}, [voteRotes], {
-      mongo: {
-        client: mongoClient
-      },
-      redis: {
-        client,
-        host: '127.0.0.1'
-      }
-    });
-    app.listen(3000,(err, address) => {
-      if(err) console.error(`Algo deu errado ao subir a aplicação, erro: ${err}`)
-      else console.log(`Aplicação ouvindo no endereço local ${address}, processo: ${process.pid}`)
-    })
+  const app = createApp({}, [voteRotes], {
+    mongo: {
+      client: mongoClient
+    },
+    redis: {
+      client,
+      host: '127.0.0.1'
+    }
+  });
+  app.listen(3000, (err, address) => {
+    if (err)
+      console.error(`Algo deu errado ao subir a aplicação, erro: ${err}`);
+    else
+      console.log(
+        `Aplicação ouvindo no endereço local ${address}, processo: ${process.pid}`
+      );
   });
 
   console.log(cluster.worker.id);
