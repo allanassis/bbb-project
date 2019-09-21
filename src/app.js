@@ -2,6 +2,7 @@ const createApp = require('./appFactory');
 const cluster = require('cluster');
 const voteRotes = require('./routes/votes');
 const seawallRotes = require('./routes/seawall');
+const participant = require('./routes/participant');
 const { client: redisClient } = require('./models/Redis');
 const mongo = require('./models/Mongo');
 
@@ -26,7 +27,7 @@ if (cluster.isMaster) {
 
 async function appUp() {
   const mongoClient = await mongo.connect();
-  const app = createApp({}, [voteRotes, seawallRotes], {
+  const app = createApp({}, [voteRotes, seawallRotes, participant], {
     mongo: {
       client: mongoClient
     },
