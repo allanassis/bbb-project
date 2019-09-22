@@ -1,7 +1,16 @@
+const { ObjectId } = require('mongodb');
+
 class Participant {
-  constructor(name, db) {
+  constructor(name = null, db) {
     this.name = name;
     this.db = db;
+  }
+
+  async get(id) {
+    const doc = await this.db
+      .collection('participant')
+      .findOne({ _id: new ObjectId(id) });
+    return doc;
   }
 
   async save() {
@@ -12,4 +21,4 @@ class Participant {
   }
 }
 
-module.exports = Participant
+module.exports = Participant;
