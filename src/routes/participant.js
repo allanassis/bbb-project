@@ -16,6 +16,10 @@ module.exports = (fastify, opts, next) => {
     console.log(cluster.worker.id);
     const { client } = fastify.mongo;
     const db = await client.db('bbb');
+    if (!id) {
+      const participants = await Participant.getAll(db);
+      reply.send({ participants });
+    }
     const participant = await new Participant(null, db).get(id);
     reply.send(participant);
   });
