@@ -12,6 +12,13 @@ module.exports = (fastify, opts, next) => {
     const result = await participant.save();
     reply.send(result.shift());
   });
+  fastify.get('/participant/:id', async ({ params: { id } }, reply) => {
+    console.log(cluster.worker.id);
+    const { client } = fastify.mongo;
+    const db = await client.db('bbb');
+    const participant = await new Participant(null, db).get(id);
+    reply.send(participant);
+  });
 
   next();
 };
