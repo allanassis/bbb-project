@@ -13,6 +13,10 @@ class Participant {
     return doc;
   }
 
+  static async getAll(db) {
+    return await db.collection('participant').find({}).toArray();
+  }
+
   async save() {
     const { ops } = await this.db
       .collection('participant')
