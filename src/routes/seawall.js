@@ -23,5 +23,22 @@ module.exports = (fastify, opts, next) => {
       .update({ _id: new ObjectID(_id) }, { $set: { status } });
     reply.send(result);
   });
+
+  fastify.get('/seawall/:id', async ({ params: { id } }, reply) => {
+    console.log(cluster.worker.id);
+    const { client } = fastify.mongo;
+    const db = await client.db('bbb');
+    if (!id) {
+      const docs = await db
+        .collection('seawall')
+        .find({})
+        .toArray();
+      reply.send(docs);
+    }
+    const doc = await db
+      .collection('seawall')
+      .findOne({ _id: new ObjectID(id) });
+    reply.send(doc);
+  });
   next();
 };
